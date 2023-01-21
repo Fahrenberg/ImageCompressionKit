@@ -5,6 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "CompressorKit",
+    platforms: [.iOS(.v15), .macOS(.v11)],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
@@ -23,6 +24,8 @@ let package = Package(
             dependencies: []),
         .testTarget(
             name: "CompressorKitTests",
-            dependencies: ["CompressorKit"]),
+            dependencies: ["CompressorKit"],
+            resources: [.process("Assets")]
+        ),
     ]
 )
