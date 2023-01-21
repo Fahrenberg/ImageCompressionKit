@@ -34,7 +34,7 @@ public struct ImageCompressor {
             iterationCompression -= percentageDecrease
         }
         
-        
+        print("ImageCompressor - compressedSize \(iterationImageSize)")
         
         return iterationImage
     }
