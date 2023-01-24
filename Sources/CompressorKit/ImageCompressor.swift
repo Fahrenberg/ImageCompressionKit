@@ -9,35 +9,35 @@ public struct ImageCompressor {
            default: return 0.2
            }
        }
-    static public func compressAsync(image: UIImage, maxByte: Int) async -> UIImage? {
+    static public func compress(image: UIImage,
+                                maxBytes: UInt64,
+                                startCompression: CGFloat = 1.0) -> UIImage?
+    {
         guard let currentImageSize = image.pngData()?.count else { return nil }
         var iterationImage: UIImage? = image
         var iterationImageSize = currentImageSize
-        var iterationCompression: CGFloat = 1.0
-        
-        while iterationImageSize > maxByte && iterationCompression > 0.01 {
+        var iterationCompression: CGFloat = startCompression
+        var countIteration = 0
+        while iterationImageSize > maxBytes && iterationCompression > 0.01 {
             let percentageDecrease = getPercentageToDecreaseTo(forDataCount: iterationImageSize)
             
             let canvasSize = CGSize(width: image.size.width * iterationCompression,
                                     height: image.size.height * iterationCompression)
-            /*
-            UIGraphicsBeginImageContextWithOptions(canvasSize, false, image.scale)
-            defer { UIGraphicsEndImageContext() }
-            image.draw(in: CGRect(origin: .zero, size: canvasSize))
-            iterationImage = UIGraphicsGetImageFromCurrentImageContext()
-            */
-            iterationImage = await image.byPreparingThumbnail(ofSize: canvasSize)
+            
+            iterationImage =  image.preparingThumbnail(of: canvasSize)
             guard let newImageSize = iterationImage?.pngData()?.count else {
                 return nil
             }
             iterationImageSize = newImageSize
             iterationCompression -= percentageDecrease
+            countIteration += 1
         }
         
-        print("ImageCompressor - compressedSize \(iterationImageSize)")
+        print("ImageCompressor - originalSize \(currentImageSize), compressedSize \(iterationImageSize),  factor \(iterationCompression), iterations \(countIteration)")
         
         return iterationImage
     }
+    
     
 }
 

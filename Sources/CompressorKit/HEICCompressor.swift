@@ -1,8 +1,41 @@
 import SwiftUI
 import AVFoundation
 
+public struct HEICCompressor {
+    
+    static func compressToHEICData(for images: [UIImage], compressionQuality: CGFloat) -> [Data] {
+        let imagesData = images.compactMap { image in
+            do {
+                return try image.heicData(compressionQuality: compressionQuality)
+            } catch {
+                return nil
+            }
+        }
+        print("compressToHEICData \(imagesData.count) images")
+        return imagesData
+    }
+    
+    static func compressToHEICDataAsync(for images: [UIImage], compressionQuality: CGFloat) async -> [Data] {
+        //  UseTaskGroup
+        // make that async! max 4 threads per batch
+        let imagesData: [Data?] = images.map { image in
+            do {
+                return try image.heicData(compressionQuality: compressionQuality)
+            } catch {
+                return nil
+            }
+        }
+        let data = imagesData.compactMap { $0 }
+        
+        print("compressToHEICDataAsync \(data.count) images")
+        return data
+    }
+}
+
+
+
 extension UIImage {
-    enum HEICError: Error {
+   enum HEICError: Error {
         case heicNotSupported
         case cgImageMissing
         case canNotFinalize
@@ -10,7 +43,7 @@ extension UIImage {
         case noUIImageCreated
     }
     
-    func heicData(compressionQuality: CGFloat) async throws -> Data {
+   public  func heicData(compressionQuality: CGFloat) throws -> Data {
         let data = NSMutableData()
         guard let imageDestination =
                 CGImageDestinationCreateWithData(
@@ -36,10 +69,10 @@ extension UIImage {
         return data as Data
     }
     
-    func heicImage(compressionQuality: CGFloat)  async throws -> UIImage {
+   public func heicImage(compressionQuality: CGFloat)  throws -> UIImage {
         do {
-            let heicData = try await self.heicData(compressionQuality: compressionQuality)
-            print("heicData = \(heicData.count)")
+            let heicData = try self.heicData(compressionQuality: compressionQuality)
+            print("HEICCompressor - heicData = \(heicData.count)")
             guard let image = UIImage(data: heicData) else { throw HEICError.noUIImageCreated }
             return image
         } catch {
