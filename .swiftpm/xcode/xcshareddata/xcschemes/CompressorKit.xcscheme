@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scheme
+   LastUpgradeVersion = "1420"
+   version = "1.3">
+   <BuildAction
+      parallelizeBuildables = "YES"
+      buildImplicitDependencies = "YES">
+      <BuildActionEntries>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "CompressorKit_CompressorKitTests"
+               BuildableName = "CompressorKit_CompressorKitTests"
+               BlueprintName = "CompressorKit_CompressorKitTests"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "CompressorKit"
+               BuildableName = "CompressorKit"
+               BlueprintName = "CompressorKit"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "CompressorKitTests"
+               BuildableName = "CompressorKitTests"
+               BlueprintName = "CompressorKitTests"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </BuildActionEntry>
+      </BuildActionEntries>
+   </BuildAction>
+   <TestAction
+      buildConfiguration = "Debug"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      shouldUseLaunchSchemeArgsEnv = "YES">
+      <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "CompressorKitTests"
+               BuildableName = "CompressorKitTests"
+               BlueprintName = "CompressorKitTests"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "PerformanceTestHEICCompressor">
+               </Test>
+               <Test
+                  Identifier = "PerformanceTests/testPerformance100ImagesFromHEICData()">
+               </Test>
+               <Test
+                  Identifier = "PerformanceTests/testPerformanceCompressFourImages()">
+               </Test>
+               <Test
+                  Identifier = "PerformanceTests/testPerformanceCompressLarge()">
+               </Test>
+               <Test
+                  Identifier = "PerformanceTests/testPerformanceCompressMedium()">
+               </Test>
+               <Test
+                  Identifier = "PerformanceTests/testPerformanceHEICCompression()">
+               </Test>
+               <Test
+                  Identifier = "PerformanceTests/testPerformanceUIImageFromHEICData()">
+               </Test>
+               <Test
+                  Identifier = "PerformanceTestsForImageCompressor">
+               </Test>
+            </SkippedTests>
+         </TestableReference>
+      </Testables>
+   </TestAction>
+   <LaunchAction
+      buildConfiguration = "Debug"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      launchStyle = "0"
+      useCustomWorkingDirectory = "NO"
+      ignoresPersistentStateOnLaunch = "NO"
+      debugDocumentVersioning = "YES"
+      debugServiceExtension = "internal"
+      allowLocationSimulation = "YES">
+   </LaunchAction>
+   <ProfileAction
+      buildConfiguration = "Release"
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      savedToolIdentifier = ""
+      useCustomWorkingDirectory = "NO"
+      debugDocumentVersioning = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "CompressorKit_CompressorKitTests"
+            BuildableName = "CompressorKit_CompressorKitTests"
+            BlueprintName = "CompressorKit_CompressorKitTests"
+            ReferencedContainer = "container:">
+         </BuildableReference>
+      </MacroExpansion>
+   </ProfileAction>
+   <AnalyzeAction
+      buildConfiguration = "Debug">
+   </AnalyzeAction>
+   <ArchiveAction
+      buildConfiguration = "Release"
+      revealArchiveInOrganizer = "YES">
+   </ArchiveAction>
+</Scheme>
