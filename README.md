@@ -13,6 +13,8 @@ static public func compress(image: UIImage,
 
 ## HEICCompressor
 
+Use it only with [supported devices for HEIC](https://support.apple.com/en-us/HT207022)
+
 Compress an UIImage (Extension) to data:
 ````
 public func heicData(compressionQuality: CGFloat) throws -> Data
@@ -29,3 +31,9 @@ compressToHEICData(for images: [UIImage], compressionQuality: CGFloat) -> [Data]
 compressToHEICDataAsync(for images: [UIImage], compressionQuality: CGFloat) async -> [Data]
 ````
 - Note: function is async but proecessing [UIImage] is sync, will us TaskGroup for parallel compressing.
+
+## JPGCompressor
+
+Fallback solution to compress images if HEIC Compressor not available (old iPhones).
+
+See [different approaches](https://stackoverflow.com/questions/29726643/how-to-compress-of-reduce-the-size-of-an-image-before-uploading-to-parse-as-pffi)

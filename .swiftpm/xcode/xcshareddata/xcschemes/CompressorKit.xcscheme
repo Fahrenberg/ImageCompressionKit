@@ -65,6 +65,14 @@
                BlueprintName = "CompressorKitTests"
                ReferencedContainer = "container:">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "PerformanceTestHEICCompressor">
+               </Test>
+               <Test
+                  Identifier = "PerformanceTestsForImageCompressor">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
    </TestAction>

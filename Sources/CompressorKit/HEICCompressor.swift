@@ -42,7 +42,7 @@ extension UIImage {
         case cgImageNotAddedAndFinished
         case noUIImageCreated
     }
-    
+   /// Use it only with [supported devices for HEIC](https://support.apple.com/en-us/HT207022)
    public  func heicData(compressionQuality: CGFloat) throws -> Data {
         let data = NSMutableData()
         guard let imageDestination =
@@ -50,6 +50,7 @@ extension UIImage {
                     data, AVFileType.heic as CFString, 1, nil
                 )
         else {
+            // [Supported devices for HEIC](https://support.apple.com/en-us/HT207022)
             throw HEICError.heicNotSupported
         }
         
