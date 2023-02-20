@@ -65,32 +65,6 @@
                BlueprintName = "CompressorKitTests"
                ReferencedContainer = "container:">
             </BuildableReference>
-            <SkippedTests>
-               <Test
-                  Identifier = "PerformanceTestHEICCompressor">
-               </Test>
-               <Test
-                  Identifier = "PerformanceTests/testPerformance100ImagesFromHEICData()">
-               </Test>
-               <Test
-                  Identifier = "PerformanceTests/testPerformanceCompressFourImages()">
-               </Test>
-               <Test
-                  Identifier = "PerformanceTests/testPerformanceCompressLarge()">
-               </Test>
-               <Test
-                  Identifier = "PerformanceTests/testPerformanceCompressMedium()">
-               </Test>
-               <Test
-                  Identifier = "PerformanceTests/testPerformanceHEICCompression()">
-               </Test>
-               <Test
-                  Identifier = "PerformanceTests/testPerformanceUIImageFromHEICData()">
-               </Test>
-               <Test
-                  Identifier = "PerformanceTestsForImageCompressor">
-               </Test>
-            </SkippedTests>
          </TestableReference>
       </Testables>
    </TestAction>
