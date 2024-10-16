@@ -1,21 +1,11 @@
-# CompressorKit
+# ImageCompressorKit
 
-## ImageCompressor
-- Compress an UIImage to a specific file size in bytes by iterating ````preparingThumbnail````.
-- Use a startCompression < 1.0 to speed up.
-- Returns the compressed UIImage.
 
-````
-static public func compress(image: UIImage,
-                            maxBytes: UInt64,
-                            startCompression: CGFloat = 1.0) -> UIImage?
-````
-
-## HEICCompressor
+## HEIC Compression for UIImage or NSImage
 
 Use it only with [supported devices for HEIC](https://support.apple.com/en-us/HT207022)
 
-Compress an UIImage (Extension) to data:
+Compress an UIImage or NSImage (Extension) to data:
 ````
 public func heicData(compressionQuality: CGFloat) throws -> Data
 ````
@@ -32,8 +22,9 @@ compressToHEICDataAsync(for images: [UIImage], compressionQuality: CGFloat) asyn
 ````
 - Note: function is async but proecessing [UIImage] is sync, will us TaskGroup for parallel compressing.
 
-## JPGCompressor
+## JPG Compression for UIImage or NSImage
 
-Fallback solution to compress images if HEIC Compressor not available (old iPhones).
+Fallback solution to compress UIImage or NSImage
+Use it if HEIC Compressor not available (old iPhones).
 
 See [different approaches](https://stackoverflow.com/questions/29726643/how-to-compress-of-reduce-the-size-of-an-image-before-uploading-to-parse-as-pffi)

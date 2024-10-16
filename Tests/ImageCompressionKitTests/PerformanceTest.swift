@@ -5,9 +5,9 @@
 //
     
 import XCTest
-@testable import CompressorKit
+@testable import ImageCompressionKit
 import XCTest
-
+/*
 final class PerformanceTestHEICCompressor: XCTestCase {
    
     var measureOnlyOnce: XCTMeasureOptions {
@@ -105,3 +105,4 @@ final class PerformanceTestHEICCompressor: XCTestCase {
     
     
 }
+*/

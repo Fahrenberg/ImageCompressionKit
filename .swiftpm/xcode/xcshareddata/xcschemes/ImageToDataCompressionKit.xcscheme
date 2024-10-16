@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1420"
-   version = "1.3">
+   LastUpgradeVersion = "1600"
+   version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
-      buildImplicitDependencies = "YES">
+      buildImplicitDependencies = "YES"
+      buildArchitectures = "Automatic">
       <BuildActionEntries>
          <BuildActionEntry
             buildForTesting = "YES"
@@ -14,37 +15,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CompressorKit_CompressorKitTests"
-               BuildableName = "CompressorKit_CompressorKitTests"
-               BlueprintName = "CompressorKit_CompressorKitTests"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CompressorKit"
-               BuildableName = "CompressorKit"
-               BlueprintName = "CompressorKit"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CompressorKitTests"
-               BuildableName = "CompressorKitTests"
-               BlueprintName = "CompressorKitTests"
+               BlueprintIdentifier = "ImageToDataCompressionKit"
+               BuildableName = "ImageToDataCompressionKit"
+               BlueprintName = "ImageToDataCompressionKit"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -54,25 +27,18 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      shouldAutocreateTestPlan = "YES">
       <Testables>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CompressorKitTests"
-               BuildableName = "CompressorKitTests"
-               BlueprintName = "CompressorKitTests"
+               BlueprintIdentifier = "ImageToDataCompressionKitTests"
+               BuildableName = "ImageToDataCompressionKitTests"
+               BlueprintName = "ImageToDataCompressionKitTests"
                ReferencedContainer = "container:">
             </BuildableReference>
-            <SkippedTests>
-               <Test
-                  Identifier = "PerformanceTestHEICCompressor">
-               </Test>
-               <Test
-                  Identifier = "PerformanceTestsForImageCompressor">
-               </Test>
-            </SkippedTests>
          </TestableReference>
       </Testables>
    </TestAction>
@@ -96,9 +62,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "CompressorKit_CompressorKitTests"
-            BuildableName = "CompressorKit_CompressorKitTests"
-            BlueprintName = "CompressorKit_CompressorKitTests"
+            BlueprintIdentifier = "ImageToDataCompressionKit"
+            BuildableName = "ImageToDataCompressionKit"
+            BlueprintName = "ImageToDataCompressionKit"
             ReferencedContainer = "container:">
          </BuildableReference>
       </MacroExpansion>
