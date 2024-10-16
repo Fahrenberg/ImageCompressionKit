@@ -25,7 +25,10 @@ let package = Package(
         .testTarget(
             name: "ImageCompressionKitTests",
             dependencies: ["ImageCompressionKit"],
-            resources: [.process("Images.xcassets")]
+            resources: [
+//                .process("Images.xcassets"),
+                .process("TestRessources")
+            ]
         )
     ]
 )
