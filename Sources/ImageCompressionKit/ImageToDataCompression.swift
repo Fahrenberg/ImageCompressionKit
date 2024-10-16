@@ -1,5 +1,5 @@
 import AVFoundation
-
+import OSLog
 // Color for macOS and iOS
 #if canImport(UIKit)
     import UIKit
@@ -68,7 +68,6 @@ extension PlatformImage {
             else {
                 throw JPGError.image_has_no_data_or_unsupported_bitmap_format
             }
-            print("JPGCompressor -jpgData = \(data.count)")
             return data
         }
     #endif
@@ -102,3 +101,7 @@ extension Data {
 }
 
 #endif
+
+extension Logger {
+    static let subsystem = "\(Bundle.main.bundleIdentifier!)"
+}

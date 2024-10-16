@@ -6,17 +6,19 @@
 //  -------------------------------------------------------------------
 
 import XCTest
+import OSLog
 
 @testable import ImageCompressionKit
 
-final class CompressionToDataTestsswift: XCTestCase {
+final class ImageCompressionKitTests: XCTestCase {
 
     var largeImage: PlatformImage? {
+        let bundle = Bundle.module
+        let largeImageURL  = bundle.url(forResource: "large", withExtension: "png")!
         #if canImport(UIKit)
-            return PlatformImage(named: "large", in: Bundle.module, with: nil)
+        return UIImage(contentsOfFile: largeImageURL.path)
         #elseif canImport(AppKit)
-            // Manually specify the test bundle for macOS
-            return Bundle.module.image(forResource: "large")
+        return NSImage(contentsOf: largeImageURL)
         #endif
     }
 
@@ -37,16 +39,21 @@ final class CompressionToDataTestsswift: XCTestCase {
             compressionQuality: jpgQuality)
         let resultBytes = UInt64(try XCTUnwrap(compressedSize).count)
         XCTAssertLessThanOrEqual(resultBytes, maxExpectedResultBytes)
-        print(
-            "testJPGCompressorLargeData: Original-Size:", originalSize,
-            "Compressed-Size:", resultBytes)
+        Logger.test.info(
+            """
+            testJPGCompressorLargeData: 
+            Original-Size: \(originalSize) 
+            Compressed-Size: \(resultBytes)
+            Factor: \(Double(originalSize) / (Double(resultBytes)))x smaller
+            """
+        )
 
     }
 
     //MARK: HEIC Compressor
     func testHEICLargeData() throws {
         let heicQuality: CGFloat = 0.1
-        let maxExpectedResultBytes: UInt64 = 500_000
+        let maxExpectedResultBytes: UInt64 = 105_000
 
         let image = try XCTUnwrap(largeImage)
         let originalSize = try XCTUnwrap(image.pngData()?.count)
@@ -54,9 +61,20 @@ final class CompressionToDataTestsswift: XCTestCase {
         let compressedSize = try image.heicData(compressionQuality: heicQuality)
         let resultBytes = UInt64(try XCTUnwrap(compressedSize).count)
         XCTAssertLessThanOrEqual(resultBytes, maxExpectedResultBytes)
-        print(
-            "testHEICLargeData: Original-Size:", originalSize,
-            "Compressed-Size:", resultBytes)
+        Logger.test.info(
+            """
+            testHEICLargeData: 
+            Original-Size: \(originalSize) 
+            Compressed-Size: \(resultBytes)
+            Factor: \(Double(originalSize) / (Double(resultBytes)))x smaller
+            """
+        )
 
     }
+}
+
+extension Logger {
+    fileprivate static let test = Logger(subsystem: subsystem, category: "ImageCompressionKitTests")
+    
+    
 }
