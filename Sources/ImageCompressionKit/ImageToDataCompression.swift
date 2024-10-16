@@ -73,7 +73,7 @@ extension PlatformImage {
         }
     #endif
     #if canImport(AppKit)
-        func jpgCompressorData(compressionQuality: CGFloat) throws -> Data {
+        public func jpgCompressorData(compressionQuality: CGFloat) throws -> Data {
             let image = self
             let cgImage = image.cgImage(
                 forProposedRect: nil, context: nil, hints: nil)!
