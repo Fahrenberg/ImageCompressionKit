@@ -1,4 +1,4 @@
-# ImageCompressorKit
+# ImageCompressionKit
 
 Extension for UIImage or NSImage (typealias PlatformImage).
 
