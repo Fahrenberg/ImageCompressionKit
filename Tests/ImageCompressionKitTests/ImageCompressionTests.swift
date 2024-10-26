@@ -75,7 +75,7 @@ final class ImageCompressionTests: XCTestCase {
     
     func testLargeImageCompressionWithMaxSizeAndHalfCompressionQualiy() throws {
         let compressionQuality = 0.5
-        let maxExpectedResultBytes: UInt64 = 500_000
+        let maxExpectedResultBytes: UInt64 = 322_000
         let image = try XCTUnwrap(largeImage)
         let originalSize = try XCTUnwrap(image.pngData()?.count)
         
@@ -101,7 +101,7 @@ final class ImageCompressionTests: XCTestCase {
     
     func testLargeImageCompressionWithMaxSize() throws {
         let compressionQuality = 0.5
-        let maxExpectedResultBytes: UInt64 = 1_100_000
+        let maxExpectedResultBytes: UInt64 = 1_005_000
         let image = try XCTUnwrap(largeImage)
         let originalSize = try XCTUnwrap(image.pngData()?.count)
         
