@@ -33,7 +33,7 @@ final class ImageCompressionPerformanceTests: XCTestCase {
         let jpgQuality: CGFloat = 0.1
         let image = try XCTUnwrap(largeImage)
         
-        self.measure(options: measureOnlyOnce) { // 0.026,
+        self.measure(options: measureOnlyOnce) { // 0.026
             _ = image.jpgDataCompression(compressionQuality: jpgQuality)
         }
     }
@@ -54,7 +54,7 @@ final class ImageCompressionPerformanceTests: XCTestCase {
         
         let images = Array(repeating: image, count: 4)
         
-        self.measure(options: measureOnlyOnce) {
+        self.measure(options: measureOnlyOnce) { // 1.552 sec
             let expectation = XCTestExpectation(description: "Concurrent HEIC compression completed")
 
             Task {
@@ -74,7 +74,7 @@ final class ImageCompressionPerformanceTests: XCTestCase {
         
         let images = Array(repeating: image, count: 4)
         
-        self.measure(options: measureOnlyOnce){
+        self.measure(options: measureOnlyOnce){ // 1.26 sec
             images.forEach { image in
                     _ =  image.heicDataCompression(compressionQuality: heicQuality)
             }
@@ -87,7 +87,7 @@ final class ImageCompressionPerformanceTests: XCTestCase {
         
         let images = Array(repeating: image, count: 4)
         
-        self.measure(options: measureOnlyOnce) {
+        self.measure(options: measureOnlyOnce) { // 0.104 sec
             let expectation = XCTestExpectation(description: "Concurrent HEIC compression completed")
 
             Task {
@@ -107,7 +107,7 @@ final class ImageCompressionPerformanceTests: XCTestCase {
         
         let images = Array(repeating: image, count: 4)
         
-        self.measure {
+        self.measure { // 0.174 sec
              images.forEach { image in
                     _ = image.jpgDataCompression(compressionQuality: heicQuality)
             }
