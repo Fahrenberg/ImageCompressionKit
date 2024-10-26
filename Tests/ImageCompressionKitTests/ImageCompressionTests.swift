@@ -72,8 +72,115 @@ final class ImageCompressionTests: XCTestCase {
         )
 
     }
+    
+    func testLargeImageCompressionWithMaxSizeAndHalfCompressionQualiy() throws {
+        let compressionQuality = 0.5
+        let maxExpectedResultBytes: UInt64 = 500_000
+        let image = try XCTUnwrap(largeImage)
+        let originalSize = try XCTUnwrap(image.pngData()?.count)
+        
+        let compressedData = image.imageDataCompressing(
+            compressionQuality: compressionQuality,
+            askedMaxBytes: maxExpectedResultBytes
+        )
+        
+        let notNilCompressedData: Data = try XCTUnwrap(compressedData)
+        let compressedSize = UInt64(notNilCompressedData.count)
+        Logger.test.info(
+            """
+            testLargeImageCompressionWithMaxSize (\(maxExpectedResultBytes))
+            Original-Size: \(originalSize) 
+            Compressed-Size: \(compressedSize)
+            """
+        )
+        XCTAssertLessThanOrEqual(
+            UInt64(compressedSize),
+            maxExpectedResultBytes
+        )
+    }
+    
+    func testLargeImageCompressionWithMaxSize() throws {
+        let compressionQuality = 0.5
+        let maxExpectedResultBytes: UInt64 = 1_100_000
+        let image = try XCTUnwrap(largeImage)
+        let originalSize = try XCTUnwrap(image.pngData()?.count)
+        
+        let compressedData = image.imageDataCompressing(
+            compressionQuality: compressionQuality,
+            askedMaxBytes: maxExpectedResultBytes
+        )
+        
+        let notNilCompressedData: Data = try XCTUnwrap(compressedData)
+        let compressedSize = UInt64(notNilCompressedData.count)
+        Logger.test.info(
+            """
+            testLargeImageCompressionWithMaxSize (\(maxExpectedResultBytes))
+            Original-Size: \(originalSize) 
+            Compressed-Size: \(compressedSize)
+            """
+        )
+        XCTAssertLessThanOrEqual(
+            UInt64(compressedSize),
+            maxExpectedResultBytes
+        )
+    }
+    
+    func testLargeImageJPGCompressionWithMaxSizeAndHalfCompressionQualiy() throws {
+        let compressionQuality = 0.5
+        let maxExpectedResultBytes: UInt64 = 670_000
+        let image = try XCTUnwrap(largeImage)
+        let originalSize = try XCTUnwrap(image.pngData()?.count)
+        
+        let compressedData = image.imageDataCompressing(
+            compressionQuality: compressionQuality,
+            askedMaxBytes: maxExpectedResultBytes,
+            jpg: true
+        )
+        
+        let notNilCompressedData: Data = try XCTUnwrap(compressedData)
+        let compressedSize = UInt64(notNilCompressedData.count)
+        Logger.test.info(
+            """
+            testLargeImageCompressionWithMaxSize (\(maxExpectedResultBytes))
+            Original-Size: \(originalSize) 
+            Compressed-Size: \(compressedSize)
+            """
+        )
+        XCTAssertLessThanOrEqual(
+            UInt64(compressedSize),
+            maxExpectedResultBytes
+        )
+    }
+    
+    func testLargeImageJPGCompressionWithMaxSize() throws {
+        let compressionQuality = 0.5
+        let maxExpectedResultBytes: UInt64 = 1_700_000
+        let image = try XCTUnwrap(largeImage)
+        let originalSize = try XCTUnwrap(image.pngData()?.count)
+        
+        let compressedData = image.imageDataCompressing(
+            compressionQuality: compressionQuality,
+            askedMaxBytes: maxExpectedResultBytes,
+            jpg: true
+        )
+        
+        let notNilCompressedData: Data = try XCTUnwrap(compressedData)
+        let compressedSize = UInt64(notNilCompressedData.count)
+        Logger.test.info(
+            """
+            testLargeImageCompressionWithMaxSize (\(maxExpectedResultBytes))
+            Original-Size: \(originalSize) 
+            Compressed-Size: \(compressedSize)
+            """
+        )
+        XCTAssertLessThanOrEqual(
+            UInt64(compressedSize),
+            maxExpectedResultBytes
+        )
+    }
+    
 }
 
 extension Logger {
-    fileprivate static let test = Logger(subsystem: subsystem, category: "ImageCompressionKitTests")
+    fileprivate static let test = Logger(subsystem: subsystem, category: "ImageDataCompressionTests")
 }
