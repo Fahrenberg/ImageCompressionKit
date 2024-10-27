@@ -21,6 +21,16 @@ final class ImageCompressionTests: XCTestCase {
         return NSImage(contentsOf: largeImageURL)
         #endif
     }
+    
+    var smallImage: PlatformImage? {
+        let bundle = Bundle.module
+        let largeImageURL  = bundle.url(forResource: "small", withExtension: "jpeg")!
+        #if canImport(UIKit)
+        return UIImage(contentsOfFile: largeImageURL.path)
+        #elseif canImport(AppKit)
+        return NSImage(contentsOf: largeImageURL)
+        #endif
+    }
 
     func testBundleAccessToImage() {
         let image = largeImage
@@ -73,34 +83,35 @@ final class ImageCompressionTests: XCTestCase {
 
     }
     
-    //MARK: Lossless Compression (compressionQuality 0.999)
-    func testHEICCompressionLossLess() throws {
+    //MARK: No Compression for small images
+    
+    func testNoHEICCompressionWithSmallImage() throws {
+        let image = try XCTUnwrap(smallImage)
+        let originalSize = try XCTUnwrap(image.pngData()?.count)
+        
+        let compressedData = image.heicDataCompression(askedMaxSize: 500_000)  // Small Image is 223613 bytes
+        let resultSize = try XCTUnwrap(compressedData?.count)
+        XCTAssertEqual(resultSize, originalSize)
+        Logger.test.info(
+            """
+            testNoHEICCompressionWithSmallImage:
+            Original-Size: \(originalSize)
+            Compressed-Size: \(resultSize)
+            """
+            )
+    }
+    
+    //MARK: No / Lossless Compression ( pngData() )
+    func testNoHEICCompression() throws {
         let image = try XCTUnwrap(largeImage)
         let originalSize = try XCTUnwrap(image.pngData()?.count)
         
         let compressedData = image.heicDataCompression()
         let resultSize = try XCTUnwrap(compressedData?.count)
-        XCTAssertLessThan(resultSize, originalSize)
+        XCTAssertEqual(resultSize, originalSize)
         Logger.test.info(
             """
-            testHEICCompressionLossLess:
-            Original-Size: \(originalSize)
-            Compressed-Size: \(resultSize)
-            Factor: \(Double(originalSize) / (Double(resultSize)))x smaller
-            """
-            )
-    }
-    
-    func testLeastJPGCompression() throws {
-        let image = try XCTUnwrap(largeImage)
-        let originalSize = try XCTUnwrap(image.pngData()?.count)
-        
-        let compressedData = image.jpgDataCompression()
-        let resultSize = try XCTUnwrap(compressedData?.count)
-        XCTAssertLessThan(resultSize, originalSize)
-        Logger.test.info(
-            """
-            testLeastJPGCompression:
+            testNoHEICCompression:
             Original-Size: \(originalSize)
             Compressed-Size: \(resultSize)
             Factor: \(Double(originalSize) / (Double(resultSize)))x smaller
@@ -132,6 +143,41 @@ final class ImageCompressionTests: XCTestCase {
             """
             )
     }
+    
+    func testNoJPGCompression() throws {
+        let image = try XCTUnwrap(largeImage)
+        let originalSize = try XCTUnwrap(image.pngData()?.count)
+        
+        let compressedData = image.jpgDataCompression()
+        let resultSize = try XCTUnwrap(compressedData?.count)
+        XCTAssertEqual(resultSize, originalSize)
+        Logger.test.info(
+            """
+            testNoJPGCompression:
+            Original-Size: \(originalSize)
+            Compressed-Size: \(resultSize)
+            Factor: \(Double(originalSize) / (Double(resultSize)))x smaller
+            """
+            )
+    }
+    
+    func testNoJPGCompressionWithSmallImage() throws {
+        let image = try XCTUnwrap(smallImage)
+        let originalSize = try XCTUnwrap(image.pngData()?.count)
+        
+        let compressedData = image.jpgDataCompression(askedMaxSize: 500_000)  // Small Image is 223613 bytes
+        let resultSize = try XCTUnwrap(compressedData?.count)
+        XCTAssertEqual(resultSize, originalSize)
+        Logger.test.info(
+            """
+            testNoJPGCompressionWithSmallImage:
+            Original-Size: \(originalSize)
+            Compressed-Size: \(resultSize)
+            """
+            )
+    }
+    
+  
    
     func testJPGCompressToSize() throws {
         let maxExpectedResultBytes: UInt64 = 105_000

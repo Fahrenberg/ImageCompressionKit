@@ -89,18 +89,27 @@ extension PlatformImage {
     ///
     /// Use it only with [supported devices for HEIC](https://support.apple.com/en-us/HT207022)
     ///
-    /// Without askedMaxSize, compresses with loss less compression,
-    /// compresssionQuality 1.0
+    /// Without askedMaxSize, returns .pngData()
+    ///
+    /// Skip compression im askedMaxSize is greater than image size, returns .pngData()
     ///
     public func heicDataCompression(askedMaxSize: UInt64 = .max) -> Data? {
         // Constants for the compression search algorithm
         let tolerance: Double = 0.1 // 10% tolerance
         let maxAttempts = 20 // Limit to avoid infinite loops in case of issues
         
-        // Early return if no size constraint is set
-        if askedMaxSize == .max {
-            return self.heicDataCompression(compressionQuality: 0.999)
+        if let originalData = self.pngData(),
+           askedMaxSize == .max || UInt64(originalData.count) <= askedMaxSize {
+            Logger.source.info(
+                    """
+                    Skipping compression as original image size (\(originalData.count) bytes)
+                    is smaller than or equal to the askedMaxSize (\(askedMaxSize == .max ? ".max" : String(describing: askedMaxSize)) bytes).
+                    """
+            )
+            return originalData
         }
+        
+
         
         // Initial bounds for the compression quality (0.0 - lowest, 1.0 - highest)
         var lowerBound: Double = 0.0
@@ -150,12 +159,13 @@ extension PlatformImage {
     ///
     /// Using faster jpg compression
     ///
-    /// Without askedMaxSize, compresses with least compression,
-    /// compresssionQuality 0.999
+    /// Without askedMaxSize, return .pngData()
+    ///
+    /// Skip compression im askedMaxSize is greater than image size, returns .pngData()
     ///
     public func jpgDataCompression(askedMaxSize: UInt64 = .max) -> Data? {
         if askedMaxSize == .max {
-            return self.jpgDataCompression(compressionQuality: 0.999)
+            return self.pngData()
         }
         return nil
     }
