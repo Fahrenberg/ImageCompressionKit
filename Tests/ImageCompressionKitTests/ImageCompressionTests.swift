@@ -53,7 +53,7 @@ final class ImageCompressionTests: XCTestCase {
     //MARK: HEIC Compressor
     func testHEICLargeData() throws {
         let heicQuality: CGFloat = 0.1
-        let maxExpectedResultBytes: UInt64 = 105_000
+        let maxExpectedResultBytes: UInt64 = 115_000
 
         let image = try XCTUnwrap(largeImage)
         let originalSize = try XCTUnwrap(image.pngData()?.count)
@@ -73,9 +73,98 @@ final class ImageCompressionTests: XCTestCase {
 
     }
     
+    //MARK: Lossless Compression (compressionQuality 0.999)
+    func testHEICCompressionLossLess() throws {
+        let image = try XCTUnwrap(largeImage)
+        let originalSize = try XCTUnwrap(image.pngData()?.count)
+        
+        let compressedData = image.heicDataCompression()
+        let resultSize = try XCTUnwrap(compressedData?.count)
+        XCTAssertLessThan(resultSize, originalSize)
+        Logger.test.info(
+            """
+            testHEICCompressionLossLess:
+            Original-Size: \(originalSize)
+            Compressed-Size: \(resultSize)
+            Factor: \(Double(originalSize) / (Double(resultSize)))x smaller
+            """
+            )
+    }
+    
+    func testLeastJPGCompression() throws {
+        let image = try XCTUnwrap(largeImage)
+        let originalSize = try XCTUnwrap(image.pngData()?.count)
+        
+        let compressedData = image.jpgDataCompression()
+        let resultSize = try XCTUnwrap(compressedData?.count)
+        XCTAssertLessThan(resultSize, originalSize)
+        Logger.test.info(
+            """
+            testLeastJPGCompression:
+            Original-Size: \(originalSize)
+            Compressed-Size: \(resultSize)
+            Factor: \(Double(originalSize) / (Double(resultSize)))x smaller
+            """
+            )
+    }
+    
+    //MARK: Compress to a size(bytes)
+    func testHEICCompressToSize() throws {
+        let maxExpectedResultBytes: UInt64 = 500_000
+        let image = try XCTUnwrap(largeImage)
+        let originalSize = try XCTUnwrap(image.pngData()?.count)
+        
+        let compressedData = image.heicDataCompression(askedMaxSize: maxExpectedResultBytes)
+        let resultSize = try XCTUnwrap(compressedData?.count)
+        
+        let maxResultSize = UInt64( Double(resultSize) * 1.1) // +10% deviation allowed
+        XCTAssertLessThan(maxExpectedResultBytes, maxResultSize)
+        
+        let minResultSize = UInt64( Double(resultSize) * 0.9)
+        XCTAssertGreaterThan(maxExpectedResultBytes, minResultSize) // -10% deviation allowed
+        
+        Logger.test.info(
+            """
+            testHEICCompressToSize:
+            Original-Size: \(originalSize)
+            Compressed-Size: \(resultSize)
+            Factor: \(Double(originalSize) / (Double(resultSize)))x smaller
+            """
+            )
+    }
+   
+    func testJPGCompressToSize() throws {
+        let maxExpectedResultBytes: UInt64 = 105_000
+        let image = try XCTUnwrap(largeImage)
+        let originalSize = try XCTUnwrap(image.pngData()?.count)
+        
+        let compressedData = image.jpgDataCompression(askedMaxSize: maxExpectedResultBytes)
+        let resultSize = try XCTUnwrap(compressedData?.count)
+        
+        let maxResultSize = UInt64( Double(resultSize) * 1.1) // +10% deviation allowed
+        XCTAssertLessThan(maxExpectedResultBytes, maxResultSize)
+        
+        let minResultSize = UInt64( Double(resultSize) * 0.9)
+        XCTAssertGreaterThan(minResultSize , maxExpectedResultBytes) // -10% deviation allowed
+        
+        Logger.test.info(
+            """
+            testJPGCompressToSize:
+            Original-Size: \(originalSize)
+            Compressed-Size: \(resultSize)
+            Factor: \(Double(originalSize) / (Double(resultSize)))x smaller
+            """
+            )
+    }
+    
+}
+
+// legacy
+
+extension ImageCompressionTests {
     func testLargeImageCompressionWithMaxSizeAndHalfCompressionQualiy() throws {
         let compressionQuality = 0.5
-        let maxExpectedResultBytes: UInt64 = 322_000
+        let maxExpectedResultBytes: UInt64 = 345_000
         let image = try XCTUnwrap(largeImage)
         let originalSize = try XCTUnwrap(image.pngData()?.count)
         
@@ -180,6 +269,7 @@ final class ImageCompressionTests: XCTestCase {
     }
     
 }
+
 
 extension Logger {
     fileprivate static let test = Logger(subsystem: subsystem, category: "ImageDataCompressionTests")

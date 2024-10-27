@@ -33,7 +33,7 @@ final class ImageCompressionPerformanceTests: XCTestCase {
         let jpgQuality: CGFloat = 0.1
         let image = try XCTUnwrap(largeImage)
         
-        self.measure(options: measureOnlyOnce) { // 0.026
+        self.measure(options: measureOnlyOnce) { // 0.026r
             _ = image.jpgDataCompression(compressionQuality: jpgQuality)
         }
     }
