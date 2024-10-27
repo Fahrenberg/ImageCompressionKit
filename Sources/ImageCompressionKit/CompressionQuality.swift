@@ -7,6 +7,11 @@
 
 import AVFoundation
 import OSLog
+#if canImport(UIKit)
+import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 
 extension PlatformImage {
     /// HEIC Image Compression (more effiencient, slower)
