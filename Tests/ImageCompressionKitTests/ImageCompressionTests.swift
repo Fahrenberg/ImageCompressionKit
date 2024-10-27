@@ -32,9 +32,11 @@ final class ImageCompressionTests: XCTestCase {
         #endif
     }
 
-    func testBundleAccessToImage() {
-        let image = largeImage
-        XCTAssertNotNil(image)
+    func testAccessToImages() {
+        let largeImage = largeImage
+        XCTAssertNotNil(largeImage)
+        let smallImage = smallImage
+        XCTAssertNotNil(smallImage)
     }
 
     //MARK: JPGCompressor
