@@ -85,55 +85,55 @@ extension PlatformImage {
 #endif
 
 extension PlatformImage {
-    /// Compress UIImage or NSImage to askedMaxSize (+/-10%)
+
+    /// Generic method to find the optimal compression quality for the target size
     ///
-    /// Use it only with [supported devices for HEIC](https://support.apple.com/en-us/HT207022)
+    /// Skips compression if the original image size (PNG format) is smaller than or equal to the askedMaxSize.
+    /// If no size constraint is set, returns the original PNG data.
     ///
-    /// Without askedMaxSize, returns .pngData()
-    ///
-    /// Skip compression im askedMaxSize is greater than image size, returns .pngData()
-    ///
-    public func heicDataCompression(askedMaxSize: UInt64 = .max) -> Data? {
+    private func findOptimalCompressionQuality(
+        askedMaxSize: UInt64,
+        compressionClosure: (Double) -> Data?
+    ) -> Data? {
         // Constants for the compression search algorithm
         let tolerance: Double = 0.1 // 10% tolerance
         let maxAttempts = 20 // Limit to avoid infinite loops in case of issues
         
+        // Check if the image's original PNG size is smaller or equal to askedMaxSize
         if let originalData = self.pngData(),
            askedMaxSize == .max || UInt64(originalData.count) <= askedMaxSize {
             Logger.source.info(
-                    """
-                    Skipping compression as original image size (\(originalData.count) bytes)
-                    is smaller than or equal to the askedMaxSize (\(askedMaxSize == .max ? ".max" : String(describing: askedMaxSize)) bytes).
-                    """
+                """
+                Skipping compression as original image size (\(originalData.count) bytes)
+                is smaller than or equal to the askedMaxSize (\(askedMaxSize == .max ? ".max" : String(describing: askedMaxSize)) bytes).
+                """
             )
             return originalData
         }
-        
 
-        
         // Initial bounds for the compression quality (0.0 - lowest, 1.0 - highest)
         var lowerBound: Double = 0.0
         var upperBound: Double = 1.0
         var bestCompressionQuality: Double = 1.0
         var attempts = 0
-        
+
         while attempts < maxAttempts {
             let midQuality = (lowerBound + upperBound) / 2.0
-            
+
             // Compress the image with the current quality setting
-            guard let compressedData = self.heicDataCompression(compressionQuality: midQuality) else {
+            guard let compressedData = compressionClosure(midQuality) else {
                 return nil // Return nil if compression fails
             }
-            
+
             let dataSize = UInt64(compressedData.count)
             let minSize = UInt64(Double(askedMaxSize) * (1.0 - tolerance))
             let maxSize = UInt64(Double(askedMaxSize) * (1.0 + tolerance))
-            
+
             // Check if the data size is within the 10% tolerance range
             if dataSize >= minSize && dataSize <= maxSize {
                 Logger.source.info(
                     """
-                    heicDataCompression (\(askedMaxSize))
+                    Compression completed for askedMaxSize (\(askedMaxSize))
                     CompressionQuality: \(midQuality)
                     Used attempts: \(attempts)
                     """
@@ -147,30 +147,37 @@ extension PlatformImage {
                 lowerBound = midQuality
                 bestCompressionQuality = midQuality
             }
-            
+
             attempts += 1
         }
-        
+
         // If max attempts are reached, use the best found compression quality
-        return self.heicDataCompression(compressionQuality: bestCompressionQuality)
+        return compressionClosure(bestCompressionQuality)
     }
-    
-    /// Compress UIImage or NSImage to askedMaxSize (+/-10%)
+
+    /// Compress UIImage or NSImage to askedMaxSize (+/-10%) using HEIC format
     ///
-    /// Using faster jpg compression
+    /// Skips compression if the original image size (PNG format) is smaller than or equal to the askedMaxSize.
+    /// If no size constraint is set, returns the original PNG data.
     ///
-    /// Without askedMaxSize, return .pngData()
+    public func heicDataCompression(askedMaxSize: UInt64 = .max) -> Data? {
+        return findOptimalCompressionQuality(askedMaxSize: askedMaxSize) { compressionQuality in
+            return self.heicDataCompression(compressionQuality: compressionQuality)
+        }
+    }
+
+    /// Compress UIImage or NSImage to askedMaxSize (+/-10%) using JPEG format
     ///
-    /// Skip compression im askedMaxSize is greater than image size, returns .pngData()
+    /// Skips compression if the original image size (PNG format) is smaller than or equal to the askedMaxSize.
+    /// If no size constraint is set, returns the original PNG data.
     ///
     public func jpgDataCompression(askedMaxSize: UInt64 = .max) -> Data? {
-        if askedMaxSize == .max {
-            return self.pngData()
+        return findOptimalCompressionQuality(askedMaxSize: askedMaxSize) { compressionQuality in
+            return self.jpgDataCompression(compressionQuality: compressionQuality)
         }
-        return nil
     }
-    
 }
+
 
 
 extension Logger {
