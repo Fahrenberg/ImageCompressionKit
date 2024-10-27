@@ -174,5 +174,32 @@ final class ImageCompressionTests: XCTestCase {
             """
             )
     }
+
     
+    
+    //MARK: nil Image
+    func testNilImageWithHEICCompression() throws {
+    #if canImport(UIKit)
+        class MockImage: UIImage, @unchecked Sendable {
+            override var cgImage: CGImage? {
+                return nil // Always return nil for testing purposes
+            }
+        }
+    #endif
+    #if canImport(AppKit)
+        class MockImage: NSImage {
+            override func cgImage(
+                forProposedRect proposedRect: UnsafeMutablePointer<NSRect>?,
+                context: NSGraphicsContext?,
+                hints: [NSImageRep.HintKey : Any]?
+            ) -> CGImage? {
+                return nil // Always return nil for testing purposes
+            }
+        }
+    #endif
+        let image = MockImage()
+        let compressedData = image.heicDataCompression()
+        XCTAssertNil(compressedData)
+    }
+
 }
