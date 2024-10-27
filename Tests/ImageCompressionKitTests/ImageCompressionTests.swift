@@ -204,7 +204,3 @@ final class ImageCompressionTests: XCTestCase {
     }
     
 }
-
-extension Logger {
-    fileprivate static let test = Logger(subsystem: subsystem, category: "ImageDataCompressionTests")
-}
