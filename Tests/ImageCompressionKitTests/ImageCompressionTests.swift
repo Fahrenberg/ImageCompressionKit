@@ -202,4 +202,45 @@ final class ImageCompressionTests: XCTestCase {
         XCTAssertNil(compressedData)
     }
 
-}
+    
+    func testHEICCompressionQualityOutOfBounds() throws {
+        let image = try XCTUnwrap(TestImage.large)
+           
+           // Test compressionQuality < 0
+           let dataNegativeQuality = image.heicDataCompression(compressionQuality: -1.0)
+           XCTAssertNotNil(dataNegativeQuality, "Data should not be nil for out-of-bounds quality < 0")
+           
+           // Test compressionQuality > 1
+           let dataHighQuality = image.heicDataCompression(compressionQuality: 2.0)
+           XCTAssertNotNil(dataHighQuality, "Data should not be nil for out-of-bounds quality > 1")
+           
+           // Test compressionQuality = 0
+           let dataZeroQuality = image.heicDataCompression(compressionQuality: 0.0)
+           XCTAssertNotNil(dataZeroQuality, "Data should not be nil for quality = 0")
+           
+           // Test compressionQuality = 1
+           let dataMaxQuality = image.heicDataCompression(compressionQuality: 1.0)
+           XCTAssertNotNil(dataMaxQuality, "Data should not be nil for quality = 1")
+       }
+       
+    func testJPGCompressionQualityOutOfBounds() throws {
+           let image = try XCTUnwrap(TestImage.large)
+           
+           // Test compressionQuality < 0
+           let dataNegativeQuality = image.jpgDataCompression(compressionQuality: -1.0)
+           XCTAssertNotNil(dataNegativeQuality, "Data should not be nil for out-of-bounds quality < 0")
+           
+           // Test compressionQuality > 1
+           let dataHighQuality = image.jpgDataCompression(compressionQuality: 2.0)
+           XCTAssertNotNil(dataHighQuality, "Data should not be nil for out-of-bounds quality > 1")
+           
+           // Test compressionQuality = 0
+           let dataZeroQuality = image.jpgDataCompression(compressionQuality: 0.0)
+           XCTAssertNotNil(dataZeroQuality, "Data should not be nil for quality = 0")
+           
+           // Test compressionQuality = 1
+           let dataMaxQuality = image.jpgDataCompression(compressionQuality: 1.0)
+           XCTAssertNotNil(dataMaxQuality, "Data should not be nil for quality = 1")
+       }
+   }
+

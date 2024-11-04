@@ -14,29 +14,36 @@ import AppKit
 #endif
 
 extension PlatformImage {
-    /// HEIC Image Compression (more effiencient, slower)
+    /// HEIC Image Compression (more efficient, slower)
     ///
     /// Use it only with [supported devices for HEIC](https://support.apple.com/en-us/HT207022)
     public func heicDataCompression(compressionQuality: CGFloat) -> Data? {
+        // Ensure compressionQuality is between 0 and 1
+        let quality = min(max(compressionQuality, 0), 1)
+        // 1.0 equals no compression
+        //  HEVC Codec Design: The HEVC (H.265) codec, underlying HEIC, optimizes for high compression efficiency rather than supporting true lossless encoding. Setting the compression factor to 1.0 essentially requests a lossless image, but HEVC isn't designed for this mode in most implementations, causing the encoding operation to fail
+        //
+        guard quality != 1.0 else {
+             return self.pngData()
+        }
+        
         let data = NSMutableData()
-        let imageDestination =
-            CGImageDestinationCreateWithData(
-                data, AVFileType.heic as CFString, 1, nil
-            )
+        let imageDestination = CGImageDestinationCreateWithData(
+            data, AVFileType.heic as CFString, 1, nil
+        )
+
         #if canImport(UIKit)
-            let cgImage = self.cgImage
+        let cgImage = self.cgImage
         #elseif canImport(AppKit)
-            let cgImage = self.cgImage(
-                forProposedRect: nil, context: nil, hints: nil)
+        let cgImage = self.cgImage(forProposedRect: nil, context: nil, hints: nil)
         #endif
-        guard let cgImage,
-            let imageDestination
-        else {
+
+        guard let cgImage, let imageDestination else {
             return nil
         }
 
         let options: NSDictionary = [
-            kCGImageDestinationLossyCompressionQuality: compressionQuality
+            kCGImageDestinationLossyCompressionQuality: quality
         ]
 
         CGImageDestinationAddImage(imageDestination, cgImage, options)
@@ -46,28 +53,27 @@ extension PlatformImage {
 
         return data as Data
     }
-}
 
-extension PlatformImage {
-    /// JPG Image Compression (faster less efficient)
+    /// JPG Image Compression (faster, less efficient)
     #if canImport(UIKit)
-        public func jpgDataCompression(compressionQuality: CGFloat) -> Data? {
-            return jpegData(compressionQuality: compressionQuality)
-        }
+    public func jpgDataCompression(compressionQuality: CGFloat) -> Data? {
+        let quality = min(max(compressionQuality, 0), 1)
+        return jpegData(compressionQuality: quality)
+    }
     #endif
+
     #if canImport(AppKit)
-        public func jpgDataCompression(compressionQuality: CGFloat) -> Data? {
-            let image = self
-            let cgImage = image.cgImage(
-                forProposedRect: nil, context: nil, hints: nil)!
-            let bitmapRep = NSBitmapImageRep(cgImage: cgImage)
-            let properties = [
-                NSBitmapImageRep.PropertyKey.compressionFactor:
-                    compressionQuality
-            ]
-            let jpegData = bitmapRep.representation(
-                using: NSBitmapImageRep.FileType.jpeg, properties: properties)
-            return jpegData
-        }
+    public func jpgDataCompression(compressionQuality: CGFloat) -> Data? {
+        let quality = min(max(compressionQuality, 0), 1)
+        let cgImage = self.cgImage(forProposedRect: nil, context: nil, hints: nil)!
+        let bitmapRep = NSBitmapImageRep(cgImage: cgImage)
+        let properties = [
+            NSBitmapImageRep.PropertyKey.compressionFactor: quality
+        ]
+        let jpegData = bitmapRep.representation(
+            using: NSBitmapImageRep.FileType.jpeg, properties: properties
+        )
+        return jpegData
+    }
     #endif
 }
