@@ -33,7 +33,7 @@ final class ImageCompressionPerformanceTests: XCTestCase {
         let jpgQuality: CGFloat = 0.1
         let image = try XCTUnwrap(largeImage)
         
-        self.measure(options: measureOnlyOnce) { // 0.026r
+        self.measure(options: measureOnlyOnce) { // 0.025
             _ = image.jpgDataCompression(compressionQuality: jpgQuality)
         }
     }
@@ -43,7 +43,7 @@ final class ImageCompressionPerformanceTests: XCTestCase {
         let heicQuality: CGFloat = 0.1
         let image = try XCTUnwrap(largeImage)
         
-        self.measure(options: measureOnlyOnce) { // 0.267
+        self.measure(options: measureOnlyOnce) { // 0.240
             _ = image.heicDataCompression(compressionQuality: heicQuality)
         }
     }
@@ -64,7 +64,7 @@ final class ImageCompressionPerformanceTests: XCTestCase {
                 expectation.fulfill()
             }
 
-            wait(for: [expectation], timeout: 10.0)  // Adjust the timeout as necessary
+            wait(for: [expectation], timeout: 2.0)  // Adjust the timeout as necessary
         }
     }
 
@@ -74,7 +74,7 @@ final class ImageCompressionPerformanceTests: XCTestCase {
         
         let images = Array(repeating: image, count: 4)
         
-        self.measure(options: measureOnlyOnce){ // 1.26 sec
+        self.measure(options: measureOnlyOnce){ // 1.17 sec
             images.forEach { image in
                     _ =  image.heicDataCompression(compressionQuality: heicQuality)
             }
@@ -97,7 +97,7 @@ final class ImageCompressionPerformanceTests: XCTestCase {
                 expectation.fulfill()
             }
 
-            wait(for: [expectation], timeout: 10.0)  // Adjust the timeout as necessary
+            wait(for: [expectation], timeout: 1.0)  // Adjust the timeout as necessary
         }
     }
     
@@ -107,7 +107,7 @@ final class ImageCompressionPerformanceTests: XCTestCase {
         
         let images = Array(repeating: image, count: 4)
         
-        self.measure { // 0.174 sec
+        self.measure { // 0.177 sec
              images.forEach { image in
                     _ = image.jpgDataCompression(compressionQuality: heicQuality)
             }

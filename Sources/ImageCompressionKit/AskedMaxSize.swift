@@ -19,10 +19,6 @@ extension PlatformImage {
         askedMaxSize: UInt64,
         compressionClosure: (Double) -> Data?
     ) -> Data? {
-        // Constants for the compression search algorithm
-        let tolerance: Double = 0.1 // 10% tolerance
-        let maxAttempts = 20 // Limit to avoid infinite loops in case of issues
-        
         // Check if the image's original PNG size is smaller or equal to askedMaxSize
         if let originalData = self.pngData(),
            askedMaxSize == .max || UInt64(originalData.count) <= askedMaxSize {
@@ -35,14 +31,18 @@ extension PlatformImage {
             return originalData
         }
 
+        // Constants for the compression search algorithm
+        let tolerance: Double = 0.1 // 10% tolerance
+        let maxAttempts = 6 // Limit to avoid infinite loops in case of issues, approx to double digit suffcient
         // Initial bounds for the compression quality (0.0 - lowest, 1.0 - highest)
         var lowerBound: Double = 0.0
         var upperBound: Double = 1.0
-        var bestCompressionQuality: Double = 1.0
+        // Results
+        var midQuality: Double = 1.0
         var attempts = 0
 
         while attempts < maxAttempts {
-            let midQuality = (lowerBound + upperBound) / 2.0
+            midQuality = (lowerBound + upperBound) / 2.0
 
             // Compress the image with the current quality setting
             guard let compressedData = compressionClosure(midQuality) else {
@@ -69,20 +69,18 @@ extension PlatformImage {
             } else {
                 // Data size too small, increase the compression quality
                 lowerBound = midQuality
-                bestCompressionQuality = midQuality
             }
-
             attempts += 1
         }
         Logger.source.error(
             """
             Compression not completed for askedMaxSize (\(askedMaxSize))
             Used attempts \(attempts) (max: \(maxAttempts))
-            Using CompressionQuality: \(bestCompressionQuality)
+            Using CompressionQuality: \(midQuality)
             """
         )
         // If max attempts are reached, use the best found compression quality
-        return compressionClosure(bestCompressionQuality)
+        return compressionClosure(midQuality)
     }
 
     /// Compress UIImage or NSImage to askedMaxSize (+/-10%) using HEIC format
