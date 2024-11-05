@@ -74,7 +74,13 @@ extension PlatformImage {
 
             attempts += 1
         }
-
+        Logger.source.error(
+            """
+            Compression not completed for askedMaxSize (\(askedMaxSize))
+            Used attempts \(attempts) (max: \(maxAttempts))
+            Using CompressionQuality: \(bestCompressionQuality)
+            """
+        )
         // If max attempts are reached, use the best found compression quality
         return compressionClosure(bestCompressionQuality)
     }
