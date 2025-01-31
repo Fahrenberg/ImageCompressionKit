@@ -43,3 +43,11 @@ public func jpgDataCompression(compressionQuality: CGFloat) -> Data?
 ````
 
 See [different approaches](https://stackoverflow.com/questions/29726643/how-to-compress-of-reduce-the-size-of-an-image-before-uploading-to-parse-as-pffi)
+
+## Resize Image
+
+Resize original image to specific CGSize. Does not compress image.
+
+````
+func resized(to targetSize: CGSize, dpi: CGFloat = 72.0) -> PlatformImage? 
+````
