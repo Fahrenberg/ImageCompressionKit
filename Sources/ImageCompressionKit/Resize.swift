@@ -12,7 +12,7 @@
  #endif
 
 extension PlatformImage {
-    func resized(to targetSize: CGSize, dpi: CGFloat = 72.0) -> PlatformImage? {
+    public func resized(to targetSize: CGSize, dpi: CGFloat = 72.0) -> PlatformImage? {
         let scaleFactor = dpi / 72.0
         let scaledSize = CGSize(width: targetSize.width * scaleFactor, height: targetSize.height * scaleFactor)
         
