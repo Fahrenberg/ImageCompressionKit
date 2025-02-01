@@ -7,6 +7,8 @@
 
 import Foundation
 import OSLog
+import Extensions
+
 @testable import ImageCompressionKit
 import XCTest
 
@@ -21,7 +23,7 @@ struct TestImage {
         let bundle = Bundle.module
         let imageURL  = bundle.url(forResource: "large", withExtension: "png")!
         #if canImport(UIKit)
-        return UIImage(contentsOfFile: largeImageURL.path)
+        return UIImage(contentsOfFile: imageURL.path)
         #elseif canImport(AppKit)
         return NSImage(contentsOf: imageURL)
         #endif
@@ -31,7 +33,7 @@ struct TestImage {
         let bundle = Bundle.module
         let imageURL  = bundle.url(forResource: "small", withExtension: "jpeg")!
         #if canImport(UIKit)
-        return UIImage(contentsOfFile: largeImageURL.path)
+        return UIImage(contentsOfFile: imageURL.path)
         #elseif canImport(AppKit)
         return NSImage(contentsOf: imageURL)
         #endif
@@ -41,7 +43,7 @@ struct TestImage {
         let bundle = Bundle.module
         let imageURL  = bundle.url(forResource: "medium", withExtension: "jpeg")!
         #if canImport(UIKit)
-        return UIImage(contentsOfFile: largeImageURL.path)
+        return UIImage(contentsOfFile: imageURL.path)
         #elseif canImport(AppKit)
         return NSImage(contentsOf: imageURL)
         #endif
@@ -69,4 +71,27 @@ extension PlatformImage {
         let height = Int(self.size.height)
         return "w:\(width) x h:\(height)"
     }
+}
+
+extension PlatformImage {
+    func writeToDisk(filename: String) throws {
+        let testDir: URL
+        let fileURL: URL
+        // write image to disk for preview
+        let subDirPath = Bundle.module.bundleIdentifier ?? "test"
+        if #available(iOS 16.0, *) {
+            testDir = FileManager().temporaryDirectory.appending(path: subDirPath)
+            fileURL = testDir.appending(path: "\(filename)")
+        } else {
+            testDir = FileManager().temporaryDirectory.appendingPathComponent(subDirPath)
+            fileURL = testDir.appendingPathComponent("\(filename)")
+        }
+        try FileManager.default.createDirectory(at: testDir, withIntermediateDirectories: true)
+        guard let data = self.pngData() else {
+            throw "Cannot save image to URL:\n\(fileURL.absoluteString)"
+        }
+        try data.write(to: fileURL)
+        Logger.test.info("Saved Image to URL:\n\(fileURL.absoluteString)")
+    }
+    
 }
