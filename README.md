@@ -14,13 +14,13 @@ Use it only with [supported devices for HEIC](https://support.apple.com/en-us/HT
 Note: For compress multiple images use **sync** not async, it's faster...
 
 ### Compress to  +/- 10% of askedMaxSize
-````
+```swift
 public func heicDataCompression(askedMaxSize: UInt64 = .max) -> Data? 
-````
+```
 ### Compress by setting compressionQuality
-````
+```swift
 public func heicDataCompression(compressionQuality: CGFloat) -> Data?
-````
+```
 
 
 ## JPG Compression for UIImage or NSImage
@@ -34,11 +34,11 @@ public func heicDataCompression(compressionQuality: CGFloat) -> Data?
 Note: For compress multiple images use ```Task {}``` async (50% faster) rather than sync.
 
 ### Compress to  +/- 10% of askedMaxSize
-````
-func jpgDataCompression(askedMaxSize: UInt64 = .max) -> Data? 
+```swift
+public func jpgDataCompression(askedMaxSize: UInt64 = .max) -> Data? 
 ````
 ### Compress by setting compressionQuality
-````
+```swift
 public func jpgDataCompression(compressionQuality: CGFloat) -> Data?
 ````
 
@@ -48,6 +48,6 @@ See [different approaches](https://stackoverflow.com/questions/29726643/how-to-c
 
 Resize original image to specific CGSize. Does not compress image.
 
-````
-func resized(to targetSize: CGSize, dpi: CGFloat = 72.0) -> PlatformImage? 
-````
+```swift
+public func resized(to targetSize: CGSize, dpi: CGFloat = 72.0) -> PlatformImage? 
+```
