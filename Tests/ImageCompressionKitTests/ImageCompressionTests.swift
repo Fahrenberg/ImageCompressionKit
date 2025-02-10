@@ -185,8 +185,7 @@ final class ImageCompressionTests: XCTestCase {
                 return nil // Always return nil for testing purposes
             }
         }
-    #endif
-    #if canImport(AppKit)
+    #elseif canImport(AppKit)
         class MockImage: NSImage {
             override func cgImage(
                 forProposedRect proposedRect: UnsafeMutablePointer<NSRect>?,
@@ -196,6 +195,8 @@ final class ImageCompressionTests: XCTestCase {
                 return nil // Always return nil for testing purposes
             }
         }
+    #else
+        fatalError("Unsupported platform (iOS or macOS only)")
     #endif
         let image = MockImage()
         let compressedData = image.heicDataCompression()

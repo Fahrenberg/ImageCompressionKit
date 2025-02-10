@@ -60,9 +60,7 @@ extension PlatformImage {
         let quality = min(max(compressionQuality, 0), 1)
         return jpegData(compressionQuality: quality)
     }
-    #endif
-
-    #if canImport(AppKit)
+    #elseif canImport(AppKit)
     public func jpgDataCompression(compressionQuality: CGFloat) -> Data? {
         let quality = min(max(compressionQuality, 0), 1)
         let cgImage = self.cgImage(forProposedRect: nil, context: nil, hints: nil)!
@@ -74,6 +72,10 @@ extension PlatformImage {
             using: NSBitmapImageRep.FileType.jpeg, properties: properties
         )
         return jpegData
+    }
+    #else
+    public func jpgDataCompression(compressionQuality: CGFloat) -> Data? {
+        fatalError("Unsupported platform (iOS or macOS only)")
     }
     #endif
 }
