@@ -1,6 +1,14 @@
 # ImageCompressionKit
 
-Extension for UIImage or NSImage (typealias PlatformImage).
+
+![](https://img.shields.io/badge/iOS%20:-15-blue)
+![](https://img.shields.io/badge/macOS%20:-11_(BigSur)-green)
+![](https://img.shields.io/badge/macOS%20:-MacCatalyst-yellow)
+![GitHub Release](https://img.shields.io/github/v/release/Fahrenberg/ImageCompressionKit)
+![GitHub last commit](https://img.shields.io/github/last-commit/Fahrenberg/ImageCompressionKit)
+
+
+Image compression for UIImage or NSImage (typealias PlatformImage).
 
 ## HEIC Compression for UIImage or NSImage
 
