@@ -12,7 +12,13 @@ import AppKit
 #endif
 
 extension PlatformImage {
-    public func resized(to targetSize: CGSize, dpi: CGFloat = 72.0) -> PlatformImage? {
+    public enum ImageAlignment {
+        case left, center, right
+    }
+    
+    public func resized(to targetSize: CGSize,
+                        dpi: CGFloat = 72.0,
+                        alignment: ImageAlignment = .center) -> PlatformImage? {
         let scaleFactor = dpi / 72.0
         let canvasSize = CGSize(width: targetSize.width * scaleFactor,
                                 height: targetSize.height * scaleFactor)
@@ -29,19 +35,29 @@ extension PlatformImage {
         let scaledImageSize = CGSize(width: originalSize.width * uniformScale,
                                      height: originalSize.height * uniformScale)
         
-        // Center the scaled image in the canvas
-        let xOffset = (canvasSize.width - scaledImageSize.width) / 2.0
+        // Compute the horizontal offset based on alignment
+        let xOffset: CGFloat
+        switch alignment {
+        case .left:
+            xOffset = 0
+        case .center:
+            xOffset = (canvasSize.width - scaledImageSize.width) / 2.0
+        case .right:
+            xOffset = canvasSize.width - scaledImageSize.width
+        }
+        
+        // Center vertically
         let yOffset = (canvasSize.height - scaledImageSize.height) / 2.0
         let drawingRect = CGRect(origin: CGPoint(x: xOffset, y: yOffset),
                                  size: scaledImageSize)
         
-        #if canImport(UIKit)
+#if canImport(UIKit)
         // For iOS, use UIGraphicsImageRenderer to create the image context.
         let renderer = UIGraphicsImageRenderer(size: canvasSize)
         return renderer.image { _ in
             self.draw(in: drawingRect)
         }
-        #elseif canImport(AppKit)
+#elseif canImport(AppKit)
         // For macOS, create a new NSImage and draw into it.
         let newImage = NSImage(size: canvasSize)
         newImage.lockFocus()
@@ -52,6 +68,6 @@ extension PlatformImage {
                   fraction: 1.0)
         newImage.unlockFocus()
         return newImage
-        #endif
+#endif
     }
 }

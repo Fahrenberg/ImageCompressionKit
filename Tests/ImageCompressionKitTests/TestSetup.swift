@@ -19,7 +19,7 @@ extension Logger {
 }
 
 enum ImageType: String {
-    case small, medium, large
+    case small, medium, large, small_center
 }
 
 struct TestImage {
