@@ -17,7 +17,7 @@ final class ImageCompressionTests: XCTestCase {
         let jpgQuality: CGFloat = 0.3
         let maxExpectedResultBytes: UInt64 = 790_000
 
-        let image = try XCTUnwrap(TestImage.large)
+        let image = try XCTUnwrap(TestImage.image(size: .large))
         let originalSize = try XCTUnwrap(image.pngData()?.count)
 
         let compressedSize = image.jpgDataCompression(
@@ -39,7 +39,7 @@ final class ImageCompressionTests: XCTestCase {
         let heicQuality: CGFloat = 0.3
         let maxExpectedResultBytes: UInt64 = 421_000
 
-        let image = try XCTUnwrap(TestImage.large)
+        let image = try XCTUnwrap(TestImage.image(size: .large))
         let originalSize = try XCTUnwrap(image.pngData()?.count)
 
         let compressedSize = image.heicDataCompression(compressionQuality: heicQuality)
@@ -59,7 +59,7 @@ final class ImageCompressionTests: XCTestCase {
     
     //MARK: No compression for small images
     func testNoHEICCompressionWithSmallImage() throws {
-        let image = try XCTUnwrap(TestImage.small)
+        let image = try XCTUnwrap(TestImage.image(size: .small))
         let originalSize = try XCTUnwrap(image.pngData()?.count)
         
         let compressedData = image.heicDataCompression(askedMaxSize: 500_000)  // Small Image is 223613 bytes
@@ -75,7 +75,7 @@ final class ImageCompressionTests: XCTestCase {
     }
     
     func testNoJPGCompressionWithSmallImage() throws {
-        let image = try XCTUnwrap(TestImage.small)
+        let image = try XCTUnwrap(TestImage.image(size: .small))
         let originalSize = try XCTUnwrap(image.pngData()?.count)
         
         let compressedData = image.jpgDataCompression(askedMaxSize: 500_000)  // Small Image is 223613 bytes
@@ -92,7 +92,7 @@ final class ImageCompressionTests: XCTestCase {
   
     //MARK: No compression if using without parameters
     func testNoHEICCompression() throws {
-        let image = try XCTUnwrap(TestImage.large)
+        let image = try XCTUnwrap(TestImage.image(size: .large))
         let originalSize = try XCTUnwrap(image.pngData()?.count)
         
         let compressedData = image.heicDataCompression()
@@ -109,7 +109,7 @@ final class ImageCompressionTests: XCTestCase {
     }
     
     func testNoJPGCompression() throws {
-        let image = try XCTUnwrap(TestImage.large)
+        let image = try XCTUnwrap(TestImage.image(size: .large))
         let originalSize = try XCTUnwrap(image.pngData()?.count)
         
         let compressedData = image.jpgDataCompression()
@@ -128,7 +128,7 @@ final class ImageCompressionTests: XCTestCase {
     //MARK: Using askedMaxSize (bytes)
     func testHEICCompressToSize() throws {
         let maxExpectedSize: UInt64 = 300_000  // max. compression ~0.1
-        let image = try XCTUnwrap(TestImage.large)
+        let image = try XCTUnwrap(TestImage.image(size: .large))
         let originalSize = try XCTUnwrap(image.pngData()?.count)
         
         let compressedData = image.heicDataCompression(askedMaxSize: maxExpectedSize)
@@ -153,7 +153,7 @@ final class ImageCompressionTests: XCTestCase {
    
     func testJPGCompressToSize() throws {
         let maxExpectedSize: UInt64 = 500_000  // max. compression ~0.1
-        let image = try XCTUnwrap(TestImage.large)
+        let image = try XCTUnwrap(TestImage.image(size: .large))
         let originalSize = try XCTUnwrap(image.pngData()?.count)
         
         let compressedData = image.jpgDataCompression(askedMaxSize: maxExpectedSize)
@@ -205,7 +205,7 @@ final class ImageCompressionTests: XCTestCase {
 
     
     func testHEICCompressionQualityOutOfBounds() throws {
-        let image = try XCTUnwrap(TestImage.large)
+        let image = try XCTUnwrap(TestImage.image(size: .large))
            
            // Test compressionQuality < 0
            let dataNegativeQuality = image.heicDataCompression(compressionQuality: -1.0)
@@ -225,7 +225,7 @@ final class ImageCompressionTests: XCTestCase {
        }
        
     func testJPGCompressionQualityOutOfBounds() throws {
-           let image = try XCTUnwrap(TestImage.large)
+        let image = try XCTUnwrap(TestImage.image(size: .large))
            
            // Test compressionQuality < 0
            let dataNegativeQuality = image.jpgDataCompression(compressionQuality: -1.0)
@@ -247,7 +247,7 @@ final class ImageCompressionTests: XCTestCase {
     func testHEICCompressionWithEqualOrMoreThan6Attempts() throws {
         let askedMaxSize: UInt64 = 10_000  // too small, returns higher size with max. compression
         
-        let image = try XCTUnwrap(TestImage.large)
+        let image = try XCTUnwrap(TestImage.image(size: .large))
         let originalSize = try XCTUnwrap(image.pngData()?.count)
         
         let compressedData = image.heicDataCompression(askedMaxSize: askedMaxSize)
@@ -273,7 +273,7 @@ final class ImageCompressionTests: XCTestCase {
     
     func testJPGCompressionWithEqualOrMoreThan6Attempts() throws {
         let askedMaxSize: UInt64 = 100_000  // too small, returns higher size with max. compression
-        let image = try XCTUnwrap(TestImage.large)
+        let image = try XCTUnwrap(TestImage.image(size: .large))
         let originalSize = try XCTUnwrap(image.pngData()?.count)
         
         let compressedData = image.jpgDataCompression(askedMaxSize: askedMaxSize)

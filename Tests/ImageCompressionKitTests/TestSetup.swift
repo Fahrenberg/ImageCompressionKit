@@ -18,48 +18,36 @@ extension Logger {
     static let test = Logger(subsystem: subsystem, category: "ImageCompressionTests")
 }
 
-struct TestImage {
-    static var large: PlatformImage? {
-        let bundle = Bundle.module
-        let imageURL  = bundle.url(forResource: "large", withExtension: "bmp")!
-        #if canImport(UIKit)
-        return UIImage(contentsOfFile: imageURL.path)
-        #elseif canImport(AppKit)
-        return NSImage(contentsOf: imageURL)
-        #endif
-    }
-    
-    static var small: PlatformImage? {
-        let bundle = Bundle.module
-        let imageURL  = bundle.url(forResource: "small", withExtension: "bmp")!
-        #if canImport(UIKit)
-        return UIImage(contentsOfFile: imageURL.path)
-        #elseif canImport(AppKit)
-        return NSImage(contentsOf: imageURL)
-        #endif
-    }
-
-     static var medium: PlatformImage? {
-        let bundle = Bundle.module
-        let imageURL  = bundle.url(forResource: "medium", withExtension: "bmp")!
-        #if canImport(UIKit)
-        return UIImage(contentsOfFile: imageURL.path)
-        #elseif canImport(AppKit)
-        return NSImage(contentsOf: imageURL)
-        #endif
-    }
-
+enum ImageType: String {
+    case small, medium, large
 }
+
+struct TestImage {
+    static func image(size type: ImageType) -> PlatformImage? {
+        let bundle = Bundle.module
+        guard let imageURL = bundle.url(forResource: type.rawValue, withExtension: "bmp") else {
+            return nil
+        }
+        #if canImport(UIKit)
+        return UIImage(contentsOfFile: imageURL.path)
+        #elseif canImport(AppKit)
+        return NSImage(contentsOf: imageURL)
+        #endif
+    }
+}
+
 
 final class BundleImageTests: XCTestCase {
     func testAccessToImages() {
-        let largeImage = TestImage.large
+        let largeImage = TestImage.image(size: .large)
         XCTAssertNotNil(largeImage)
         Logger.test.info("largeImage  size: \(largeImage?.sizeDescription ?? "nil", privacy: .public)")
-        let mediumImage = TestImage.medium
+
+        let mediumImage = TestImage.image(size: .medium)
         XCTAssertNotNil(mediumImage)
         Logger.test.info("mediumImage size: \(mediumImage?.sizeDescription ?? "nil", privacy: .public)")
-        let smallImage = TestImage.small
+
+        let smallImage = TestImage.image(size: .small)
         XCTAssertNotNil(smallImage)
         Logger.test.info("smallImage  size: \(smallImage?.sizeDescription ?? "nil", privacy: .public)")
     }
