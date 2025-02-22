@@ -17,21 +17,10 @@ final class ImageCompressionPerformanceTests: XCTestCase {
         return option
     }
     
-    var largeImage: PlatformImage? {
-        let bundle = Bundle.module
-        let largeImageURL  = bundle.url(forResource: "large", withExtension: "png")!
-        #if canImport(UIKit)
-        return UIImage(contentsOfFile: largeImageURL.path)
-        #elseif canImport(AppKit)
-        return NSImage(contentsOf: largeImageURL)
-        #endif
-    }
-   
-    
     
     func testPerformanceJPGCompressorLargeData() throws {
         let jpgQuality: CGFloat = 0.1
-        let image = try XCTUnwrap(largeImage)
+        let image = try XCTUnwrap(TestImage.large)
         
         self.measure(options: measureOnlyOnce) { // 0.025
             _ = image.jpgDataCompression(compressionQuality: jpgQuality)
@@ -41,7 +30,7 @@ final class ImageCompressionPerformanceTests: XCTestCase {
     
     func testPerformanceHEICCompressorLargeData() throws {
         let heicQuality: CGFloat = 0.1
-        let image = try XCTUnwrap(largeImage)
+        let image = try XCTUnwrap(TestImage.large)
         
         self.measure(options: measureOnlyOnce) { // 0.240
             _ = image.heicDataCompression(compressionQuality: heicQuality)
@@ -50,7 +39,7 @@ final class ImageCompressionPerformanceTests: XCTestCase {
     
     func testPerformance4HEICCompressionsConcurrent() async throws {
         let heicQuality: CGFloat = 0.5
-        let image = try XCTUnwrap(largeImage)
+        let image = try XCTUnwrap(TestImage.large)
         
         let images = Array(repeating: image, count: 4)
         
@@ -70,7 +59,7 @@ final class ImageCompressionPerformanceTests: XCTestCase {
 
     func testPerformance4HEICCompressionsSync() async throws {
         let heicQuality: CGFloat = 0.5
-        let image = try XCTUnwrap(largeImage)
+        let image = try XCTUnwrap(TestImage.large)
         
         let images = Array(repeating: image, count: 4)
         
@@ -83,7 +72,7 @@ final class ImageCompressionPerformanceTests: XCTestCase {
 
     func testPerformance4JPGCompressionsConcurrent() async throws {
         let heicQuality: CGFloat = 0.5
-        let image = try XCTUnwrap(largeImage)
+        let image = try XCTUnwrap(TestImage.large)
         
         let images = Array(repeating: image, count: 4)
         
@@ -103,7 +92,7 @@ final class ImageCompressionPerformanceTests: XCTestCase {
     
     func testPerformance4JPGCompressionsSync() async throws {
         let heicQuality: CGFloat = 0.5
-        let image = try XCTUnwrap(largeImage)
+        let image = try XCTUnwrap(TestImage.large)
         
         let images = Array(repeating: image, count: 4)
         

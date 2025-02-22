@@ -21,7 +21,7 @@ extension Logger {
 struct TestImage {
     static var large: PlatformImage? {
         let bundle = Bundle.module
-        let imageURL  = bundle.url(forResource: "large", withExtension: "png")!
+        let imageURL  = bundle.url(forResource: "large", withExtension: "bmp")!
         #if canImport(UIKit)
         return UIImage(contentsOfFile: imageURL.path)
         #elseif canImport(AppKit)
@@ -31,7 +31,7 @@ struct TestImage {
     
     static var small: PlatformImage? {
         let bundle = Bundle.module
-        let imageURL  = bundle.url(forResource: "small", withExtension: "jpeg")!
+        let imageURL  = bundle.url(forResource: "small", withExtension: "bmp")!
         #if canImport(UIKit)
         return UIImage(contentsOfFile: imageURL.path)
         #elseif canImport(AppKit)
@@ -41,7 +41,7 @@ struct TestImage {
 
      static var medium: PlatformImage? {
         let bundle = Bundle.module
-        let imageURL  = bundle.url(forResource: "medium", withExtension: "jpeg")!
+        let imageURL  = bundle.url(forResource: "medium", withExtension: "bmp")!
         #if canImport(UIKit)
         return UIImage(contentsOfFile: imageURL.path)
         #elseif canImport(AppKit)
