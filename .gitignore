@@ -1,9 +1,7 @@
 .DS_Store
-/.build
-/Packages
-/*.xcodeproj
-xcuserdata/
-DerivedData/
+Sources/.DS_Store
+Tests/.DS_Store
+.build/
 .swiftpm/
-.netrc
 Package.resolved
+*.swp
