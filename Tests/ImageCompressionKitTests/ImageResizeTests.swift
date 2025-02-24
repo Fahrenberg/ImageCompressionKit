@@ -7,6 +7,7 @@
 
 import XCTest
 import OSLog
+import Extensions
 
 @testable import ImageCompressionKit
 
