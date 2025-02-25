@@ -18,8 +18,21 @@ extension Logger {
     static let test = Logger(subsystem: subsystem, category: "ImageCompressionTests")
 }
 
-enum ImageType: String {
+enum ImageType: String, CaseIterable {
     case large, medium, small, small_center, small_left, small_right
+    
+    var imageAlignment: PlatformImage.ImageAlignment {
+        switch self {
+        case .small_center:
+            return .center
+        case .small_left:
+            return .left
+        case .small_right:
+            return .right
+        default:
+            return .center
+        }
+    }
 }
 
 struct TestImage {
