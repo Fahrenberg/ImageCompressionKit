@@ -18,8 +18,21 @@ extension Logger {
     static let test = Logger(subsystem: subsystem, category: "ImageCompressionTests")
 }
 
-enum ImageType: String {
-    case small, medium, large, small_center
+enum ImageType: String, CaseIterable {
+    case large, medium, small, small_center, small_left, small_right
+    
+    var imageAlignment: PlatformImage.ImageAlignment {
+        switch self {
+        case .small_center:
+            return .center
+        case .small_left:
+            return .left
+        case .small_right:
+            return .right
+        default:
+            return .center
+        }
+    }
 }
 
 struct TestImage {
@@ -51,35 +64,4 @@ final class BundleImageTests: XCTestCase {
         XCTAssertNotNil(smallImage)
         Logger.test.info("smallImage  size: \(smallImage?.sizeDescription ?? "nil", privacy: .public)")
     }
-}
-
-extension PlatformImage {
-    var sizeDescription: String {
-        let width = Int(self.size.width)
-        let height = Int(self.size.height)
-        return "w:\(width) x h:\(height)"
-    }
-}
-
-extension PlatformImage {
-    func writeToDisk(filename: String) throws {
-        let testDir: URL
-        let fileURL: URL
-        // write image to disk for preview
-        let subDirPath = Bundle.module.bundleIdentifier ?? "test"
-        if #available(iOS 16.0, *) {
-            testDir = FileManager().temporaryDirectory.appending(path: subDirPath)
-            fileURL = testDir.appending(path: "\(filename)")
-        } else {
-            testDir = FileManager().temporaryDirectory.appendingPathComponent(subDirPath)
-            fileURL = testDir.appendingPathComponent("\(filename)")
-        }
-        try FileManager.default.createDirectory(at: testDir, withIntermediateDirectories: true)
-        guard let data = self.pngData() else {
-            throw "Cannot save image to URL:\n\(fileURL.absoluteString)"
-        }
-        try data.write(to: fileURL)
-        Logger.test.info("Saved Image to URL:\n\(fileURL.absoluteString)")
-    }
-    
 }
