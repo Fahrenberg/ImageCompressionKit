@@ -18,25 +18,31 @@ import ImageConverterKit
 
 #Playground("Image Types") {
     let filenames = [
-     "HEIC-Scan.heic",
-     "JPG-Scan.jpg",
-     "PNG-Scan-1.png",
+//     "HEIC-Scan.heic",
+//     "JPG-Scan.jpg",
+//     "PNG-Scan-1.png",
      "JPG-Large.jpg",
-     "TIFF.tif",
-     "Sample-Word-DOC.docx",
-     "SamplePDF.pdf"
+//     "TIFF.tif",
+//     "Sample-Word-DOC.docx",
+//     "SamplePDF.pdf",
+     "small-webp.bmp"
     ]
    
     for filename in filenames {
         let data: Data = try readTestData(filename: filename)
-        let _ = data.isImage
-        let _ = data.imageType?.isHEICImage
+        let convertedData = data.heicData()
+        print(data.count,
+              data.isImage,
+              data.imageType?.isHEICImage,
+              convertedData?.count,
+              convertedData?.imageType?.isHEICImage
+              )
     }
     
 }
 
 #Playground("Image Dimension") {
-    let filename = "JPG-Large.jpg"
+    let filename = "small-webp.bmp"
     guard let originalData: Data = try? readTestData(filename: filename),
           let originalSource = CGImageSourceCreateWithData(originalData as CFData, nil),
           let originalImage =  CGImageSourceCreateImageAtIndex(originalSource, 0, nil)

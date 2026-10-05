@@ -20,13 +20,11 @@ extension Data {
         )
         guard quality < 1 else
         { return nil }
-        guard let heicData = ImageConverter.convertData(
+        return ImageConverter.convertData(
             from: self,
             type: .heic,
             quality: quality
         )
-        else { return nil}
-        return heicData.count <= self.count ? heicData : nil
     }
 
     public  func jpegData(quality: Double = ImageConverter.defaultJPEGQuality) -> Data? {
@@ -35,13 +33,11 @@ extension Data {
             (0...1).contains(quality),
             "jpegData compression quality must be between 0 and 1."
         )
-        guard let jpegData = ImageConverter.convertData(
+        return ImageConverter.convertData(
             from: self,
             type: .jpeg,
             quality: quality
         )
-        else { return nil }
-        return jpegData.count <= self.count ? jpegData : nil
     }
 
     public func pngData() -> Data? {
@@ -87,4 +83,3 @@ extension Data {
     }
     
 }
-

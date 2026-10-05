@@ -1,9 +1,6 @@
 # ImageConverterKit
 
-![](https://img.shields.io/badge/iOS-15-blue)
-![](https://img.shields.io/badge/macOS-11_(BigSur)_|_MacCatalyst-green)
-![GitHub Release](https://img.shields.io/github/v/release/Fahrenberg/ImageCompressionKit)
-![GitHub last commit](https://img.shields.io/github/last-commit/Fahrenberg/ImageCompressionKit)
+![](https://img.shields.io/badge/iOS-15-blue) ![](https://img.shields.io/badge/macOS-11-blue) ![GitHub Release](https://img.shields.io/github/v/release/Fahrenberg/ImageCompressionKit) ![GitHub last commit](https://img.shields.io/github/last-commit/Fahrenberg/ImageCompressionKit)
 
 ImageCompressionKit is a lightweight, platform-independent image conversion library built on top of Apple's **ImageIO** framework.
 
@@ -91,12 +88,16 @@ imageData.heicData(quality: 0.85)
 imageData.jpgData(quality: 0.50)
 ```
 
+**Note:** Converting to target format may result in large file size! E.g. when converting a webp to heic.
+
 Compress to target size:
 
 ```swift
 imageData.heicData(askedMaxSize: 300_000)
 imageData.jpgData(askedMaxSize: 300_000)
 ```
+
+Resulting data size is around askedMaxSize, no guarantee to provide the exact size, might be even larger than askedMaxSize.
 
 ---
 
@@ -194,14 +195,6 @@ type?.isPNGImage
 # Alpha Handling
 
 JPEG and HEIC do not support transparency. ImageCompressionKit automatically removes alpha channels when required before encoding. PNG preserves transparency.
-
----
-
-# Requirements
-
-- iOS 15+
-- macOS 11+
-- Mac Catalyst
 
 ---
 

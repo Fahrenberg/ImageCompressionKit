@@ -27,18 +27,20 @@ extension Logger {
 }
 
 enum ImageType: String, CaseIterable {
-    case large, medium, small, JPG_Scan
+    case large, medium, small, JPG_Scan, small_webp
    
     private static let maxSizes: [UTType: [ImageType: Int]] = [
         .heic: [
             .large: 2_000_000,
             .medium: 400_000,
-            .small: 50_000
+            .small: 50_000,
+            .small_webp: 200_000
         ],
         .jpeg: [
             .large: 3_000_000,
             .medium: 500_000,
-            .small: 200_000
+            .small: 200_000,
+            .small_webp: 200_000
         ]
     ]
 
